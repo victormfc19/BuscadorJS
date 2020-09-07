@@ -104,3 +104,5 @@ function llenarSelect(){
         year.appendChild(yearHTML); // Lo inserto en el HTML
     }
 }
+
+// inicialize git en VS Code
