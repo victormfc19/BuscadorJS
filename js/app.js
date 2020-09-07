@@ -1,12 +1,19 @@
 // Variables
 
-const resultado = document.querySelector('#resultado');
+const resultado = document.querySelector('#resultado'); 
+const year = document.querySelector('#year');
+
+const max = new Date().getFullYear();
+const min = max - 10;
 
 
 // Eventos
 
 document.addEventListener('DOMContentLoaded', () => {
     mostrarAutos();
+
+
+    llenarSelect();
 });
 
 
@@ -25,7 +32,19 @@ function mostrarAutos() {
 
        resultado.appendChild(autoHTML); // Añadirlo al id resultado en el html
        
-   });
-        
+   });  
+}
+
+function llenarSelect(){
     
+    for(let i = max; i >= min ; i--){
+        
+        const yearHTML = document.createElement('option');
+        yearHTML.textContent = `
+            ${i}
+        `;
+        year.appendChild(yearHTML);
+    }
+
+     
 }
