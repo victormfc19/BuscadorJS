@@ -48,31 +48,31 @@ year.addEventListener('change', (e) => {
  minimo.addEventListener('change', (e) => {
    
     datoBusqueda.minimo = e.target.value;
-  
+    filtrarAuto();
  })
 
  maximo.addEventListener('change', (e) => {
     
     datoBusqueda.maximo = e.target.value;
-   
+    filtrarAuto();
  })
 
  puertas.addEventListener('change', (e) => {
     
-    datoBusqueda.puertas = e.target.value;
-    
+    datoBusqueda.puertas = parseInt(e.target.value);
+    filtrarAuto();
  })
 
  transmision.addEventListener('change', (e) => {
     
     datoBusqueda.transmision = e.target.value;
-   
+    filtrarAuto();
  })
 
  color.addEventListener('change', (e) => {
     
     datoBusqueda.color = e.target.value;
-   
+    filtrarAuto();
  })
 
 // Funciones
@@ -94,7 +94,9 @@ function mostrarAutos(autos) {
 }
 
 function limpiartHTML(){
-    
+    while(resultado.firstChild){
+        resultado.removeChild( resultado.firstChild );
+    }
 }
 
 function llenarSelect(){
@@ -110,9 +112,21 @@ function llenarSelect(){
 // Funcion que filtre en la busqueda
 
 function filtrarAuto(){
-    const resultado = autos.filter( filtrarMarca ).filter( filtrarYear );
-    //console.log(resultado);
-    mostrarAutos(resultado);
+    const resultado = autos.filter( filtrarMarca ).filter( filtrarYear ).filter( filtrarMinimo).filter(filtrarMaximo).filter(filtrarPuertas).filter(filtrarTransmision).filter(filtrarColor);
+
+    if( resultado.length)
+        mostrarAutos(resultado);
+    else    
+        noResultado();
+}
+
+function noResultado(){
+    limpiartHTML();
+
+    const noResultado = document.createElement('div');
+    noResultado.classList.add('alerta','error');
+    noResultado.textContent = "No hay resultados";
+    resultado.appendChild(noResultado);
 }
 
 function filtrarMarca(auto){
@@ -127,5 +141,47 @@ function filtrarYear(auto){
     if(year){
         return  auto.year  === year ;
     }  
+    return auto;
+}
+
+function filtrarMinimo(auto){
+    const { minimo } = datoBusqueda;
+    if(minimo){
+        return auto.precio >= minimo
+    }
+    return auto;
+}
+
+function filtrarMaximo(auto){
+    const { maximo } = datoBusqueda;
+    if( maximo ){
+        return auto.precio <= maximo
+    }
+    return auto;
+}
+
+function filtrarPuertas(auto){
+    const { puertas } = datoBusqueda;
+    if( puertas ){
+        return auto.puertas === puertas
+    }
+    return auto;
+}
+
+
+function filtrarTransmision(auto){
+    const { transmision } = datoBusqueda;
+    if( transmision ){
+        return auto.transmision  === transmision 
+    }
+    return auto;
+}
+
+
+function filtrarColor(auto){
+    const { color } = datoBusqueda;
+    if(color ){
+        return auto.color === color
+    }
     return auto;
 }
